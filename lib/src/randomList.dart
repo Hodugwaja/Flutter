@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'saved.dart';
 
 class RandomList extends StatefulWidget{
   @override
@@ -15,11 +16,21 @@ class _RandomListState extends State<RandomList>{
     return  MaterialApp(
       home : Scaffold(
         appBar : AppBar(
-          centerTitle: true,
-          title : Text("Sibal WelCae neulyeo"),
-        ),
-        body : _buildList(),
+            centerTitle: true,
+            title : Text("Sibal WelCae neulyeo"),
+            actions : <Widget>[
+                IconButton(
+                icon : Icon(Icons.list),
+                onPressed: (){
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SavedList(saved : _saved))
+                  );
+                },
+              )
+          ],
       ),
+      body : _buildList(),
+    ),
     );
   }
   Widget _buildList(){
@@ -38,16 +49,17 @@ class _RandomListState extends State<RandomList>{
   Widget _buildRow(WordPair pair){
     final bool alreadySaved = _saved.contains(pair);
     return ListTile(
-      title :Text(
-        pair.asPascalCase,
-        textScaleFactor: 2,
-      ),
-      trailing : Icon(
-        alreadySaved ? Icons.star : Icons.star_border,
-        color : Colors.yellow,
-      ),
-      onTap : (){
-        setState(() {
+        title :Text(
+          pair.asPascalCase,
+          textScaleFactor: 2,
+        ),
+
+        trailing : Icon(
+          alreadySaved ? Icons.star : Icons.star_border,
+          color : Colors.yellow,
+        ),
+        onTap : (){
+          setState(() {
             if (alreadySaved) {
               _saved.remove(pair); // true
             } else {
@@ -56,7 +68,7 @@ class _RandomListState extends State<RandomList>{
             print(_saved.toString());
           });
         }
-      );
+    );
 
   }
 }
