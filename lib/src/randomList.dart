@@ -8,6 +8,7 @@ class RandomList extends StatefulWidget{
 
 class _RandomListState extends State<RandomList>{
   final List<WordPair> _suggestions = <WordPair>[];
+  final Set<WordPair> _saved = Set<WordPair>();
 
   @override
   Widget build(BuildContext context){
@@ -35,18 +36,27 @@ class _RandomListState extends State<RandomList>{
   }
 
   Widget _buildRow(WordPair pair){
+    final bool alreadySaved = _saved.contains(pair);
     return ListTile(
       title :Text(
         pair.asPascalCase,
         textScaleFactor: 2,
       ),
       trailing : Icon(
-        Icons.star_border,
+        alreadySaved ? Icons.star : Icons.star_border,
         color : Colors.yellow,
       ),
       onTap : (){
-        print(pair.asPascalCase);
-      }
-    );
+        setState(() {
+            if (alreadySaved) {
+              _saved.remove(pair); // true
+            } else {
+              _saved.add(pair); // false
+            }
+            print(_saved.toString());
+          });
+        }
+      );
+
   }
 }
